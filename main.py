@@ -14,24 +14,31 @@ white = (255,255,255)
 red = (255,0,0) 
 green = (0,255,0) 
 
-myTextFont = pygame.font.Font("./Fonts/font_kdg/솔뫼 김대건 Light.ttf", 125)
-myText = myTextFont.render("조선 팔도 어부", True, red) 
-myTextArea = myText.get_rect() 
-myTextArea.center = (player_pos.x, player_pos.y - 300)
+textFont = pygame.font.Font("./Fonts/font_kdg/솔뫼 김대건 Light.ttf", 125)
 
-IntroScreen = pygame.transform.scale(pygame.image.load('./Images/Background/game_intro.jpg'), (1600, 900))
+mainScene = pygame.transform.scale(pygame.image.load("./Images/Background/game_Background.png"), (1600, 900))
+mainTitle = pygame.transform.scale(pygame.image.load("./Images/Background/game_title.png"), (800, 320))
+mainScene_y = -1000
+finishSceneOpen = False
+
+mainBGM = pygame.mixer.Sound( "./Sounds/BGM/main_title_BGM.mp3" )
+mainBGM.set_volume(0.1)
+mainBGM.play(-1)
 
 while running:    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill("purple")
-    
-    screen.blit(IntroScreen, (0, 0)) 
-    
-    screen.blit(myText, myTextArea) 
+    if mainScene_y <= 0 and not finishSceneOpen:
+        mainScene_y += 600 * dt
+    else:
+        mainScene_y = 0
+        finishSceneOpen = True
 
+    screen.blit(mainScene, (0, 0))
+    screen.blit(mainTitle, (500, mainScene_y))
+    
     pygame.display.flip()
 
     dt = clock.tick(60) / 1000
